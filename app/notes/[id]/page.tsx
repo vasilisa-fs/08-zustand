@@ -23,7 +23,7 @@ export const generateMetadata = async ({
     openGraph: {
       title,
       description,
-      url: `https://notehub.app/notes/${id}`,
+      url: `https://08-zustand-theta-ebon.vercel.app/notes/${id}`,
       images: [
         {
           url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
@@ -34,7 +34,7 @@ export const generateMetadata = async ({
       ],
     },
   };
-}
+};
 
 const NoteDetails = async ({ params }: NoteDetailsProps) => {
   const { id } = await params;
