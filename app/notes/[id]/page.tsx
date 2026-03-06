@@ -5,9 +5,35 @@ import {
 } from '@tanstack/react-query';
 import { fetchNoteById } from '@/lib/api';
 import NoteDetailsClient from './NoteDetails.client';
+import type { Metadata } from 'next';
 
 interface NoteDetailsProps {
   params: Promise<{ id: string }>;
+}
+export const generateMetadata = async ({
+  params,
+}: NoteDetailsProps): Promise<Metadata> => {
+  const { id } = await params;
+  const note = await fetchNoteById(id);
+  const title = note.title;
+  const description = note.content.slice(0, 100);
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://notehub.app/notes/${id}`,
+      images: [
+        {
+          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'NoteHub is a simple and efficient application for managing personal notes.',
+        },
+      ],
+    },
+  };
 }
 
 const NoteDetails = async ({ params }: NoteDetailsProps) => {

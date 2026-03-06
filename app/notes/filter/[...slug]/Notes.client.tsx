@@ -5,11 +5,10 @@ import { useDebouncedCallback } from 'use-debounce';
 import { fetchNotes } from '@/lib/api';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import Pagination from '@/components/Pagination/Pagination';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
 import css from './Notes.module.css';
 import { NoteTag } from '@/types/note';
+import Link from 'next/link';
 
 interface NotesClientProps {
   tag?: NoteTag;
@@ -19,17 +18,8 @@ const NotesClient = ({ tag }: NotesClientProps) => {
   const [query, setQuery] = useState<string>('');
   const [inputValue, setInputValue] = useState('');
   const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const perPage = 12;
-
-  const handleClick = (): void => {
-    setIsModalOpen(true);
-  };
-
-  const handleClose = (): void => {
-    setIsModalOpen(false);
-  };
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
     setQuery(value);
@@ -64,9 +54,9 @@ const NotesClient = ({ tag }: NotesClientProps) => {
           />
         )}
         {
-          <button className={css.button} onClick={handleClick}>
+          <Link href="/notes/action/create" className={css.button}>
             Create note +
-          </button>
+          </Link>
         }
       </div>
 
@@ -79,12 +69,6 @@ const NotesClient = ({ tag }: NotesClientProps) => {
       )}
 
       {notes.length > 0 && <NoteList notes={notes} />}
-
-      {isModalOpen && (
-        <Modal onClose={handleClose}>
-          <NoteForm onClose={handleClose}></NoteForm>
-        </Modal>
-      )}
     </div>
   );
 };
